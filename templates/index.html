@@ -31,7 +31,7 @@
         }
         
         h1 {
-            color: #333;
+            color: #007bff;
             text-align: center;
             margin-bottom: 10px;
             font-size: 2.5em;
@@ -180,6 +180,13 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        
+        #stats {
+            background: #e7f3ff;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -227,10 +234,13 @@
             <button type="submit">Generate Password</button>
         </form>
         
+        <p id="stats" style="text-align: center; margin-top: 20px; color: #666; font-size: 0.9em;">Click generate to see stats</p>
+        
         {% if password %}
         <div class="result">
             <h3>Your Password:</h3>
             <div class="password-display">{{ password }}</div>
+            <button onclick="navigator.clipboard.writeText('{{ password }}').then(()=>alert('Copied!')).catch(()=>alert('Copy failed'))" style="width: auto; padding: 8px 20px; margin: 10px 0; background: #28a745; font-size: 0.9em;">Copy Password</button>
             <p>
                 <strong>Strength:</strong> 
                 <span class="strength {{ strength.lower() }}">{{ strength }}</span>
@@ -238,5 +248,27 @@
         </div>
         {% endif %}
     </div>
+    
+    <script>
+        // Load existing stats from localStorage
+        let gens = JSON.parse(localStorage.getItem('pwStats') || '[]');
+        const btn = document.querySelector('button[type="submit"]');
+        const statsEl = document.getElementById('stats');
+        
+        // Update stats when form is submitted
+        btn.onclick = () => {
+            const len = parseInt(document.querySelector('input[name="length"]').value);
+            gens.push({length: len, time: new Date().toISOString()});
+            localStorage.setItem('pwStats', JSON.stringify(gens));
+            const avg = gens.reduce((a, b) => a + b.length, 0) / gens.length;
+            statsEl.innerHTML = `Generated: ${gens.length} | Avg length: ${avg.toFixed(1)}`;
+        };
+        
+        // Load initial stats on page load
+        if (gens.length) {
+            const avg = gens.reduce((a, b) => a + b.length, 0) / gens.length;
+            statsEl.innerHTML = `Generated: ${gens.length} | Avg length: ${avg.toFixed(1)}`;
+        }
+    </script>
 </body>
 </html>
