@@ -19,10 +19,15 @@ pip install -r requirements.txt
 
 2. Run the app:
 ```bash
-python3 app.py
+python3 run.py
 ```
 
-3. Open your browser to `http://localhost:5000`
+3. Run tests:
+```bash
+pytest
+```
+
+4. Open your browser to `http://localhost:5000`
 
 ## Deploying to Render
 
@@ -35,7 +40,7 @@ python3 app.py
      - **Name**: password-generator (or your choice)
      - **Environment**: Python 3
      - **Build Command**: `pip install -r requirements.txt`
-     - **Start Command**: `python app.py`
+     - **Start Command**: `python run.py`
    - Click "Create Web Service"
 
 3. Render will automatically:
@@ -48,9 +53,27 @@ python3 app.py
 - `SECRET_KEY`: Flask secret key for sessions (Render can generate this)
 - `PORT`: Automatically set by Render (don't set manually)
 
+## Project Structure
+
+```
+pwgen-app/
+├── app.py              # Flask factory with routes
+├── generators.py       # Password generation logic
+├── run.py              # Application entry point
+├── templates/
+│   └── index.html      # Web interface
+├── tests/
+│   └── test_generators.py  # Unit tests
+├── requirements.txt    # Python dependencies
+└── PasswordGen.py      # Original console version (reference)
+```
+
 ## Files
 
-- `app.py`: Main Flask application
-- `templates/index.html`: Web interface
+- `app.py`: Flask application factory with routes
+- `generators.py`: Password generation and strength checking functions
+- `run.py`: Entry point to run the application
+- `templates/index.html`: Web interface template
+- `tests/test_generators.py`: Unit tests for password generation
 - `requirements.txt`: Python dependencies
 - `PasswordGen.py`: Original console version (kept for reference)
