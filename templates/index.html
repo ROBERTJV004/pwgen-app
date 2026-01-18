@@ -4,34 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Generator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/heroicons@2.0.18/24/outline/index.js" type="module"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            background: linear-gradient(135deg, #000000 0%, #1e293b 50%, #0f172a 100%);
+            background-attachment: fixed;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
             position: relative;
             overflow-x: hidden;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
         
         body::before {
@@ -42,380 +29,233 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
         
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 480px;
-            width: 100%;
-            animation: fadeInUp 0.6s ease-out;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
+        .cyber-glow {
             box-shadow: 
-                0 8px 32px 0 rgba(31, 38, 135, 0.37),
-                inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
-            padding: 48px 40px;
-            margin-bottom: 24px;
+                0 0 20px rgba(6, 182, 212, 0.5),
+                0 0 40px rgba(168, 85, 247, 0.3),
+                0 0 60px rgba(6, 182, 212, 0.2);
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
+        .cyber-glow-hover:hover {
+            box-shadow: 
+                0 0 30px rgba(6, 182, 212, 0.7),
+                0 0 60px rgba(168, 85, 247, 0.5),
+                0 0 90px rgba(6, 182, 212, 0.3);
         }
         
-        h1 {
-            font-size: 42px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 
+                    0 0 20px rgba(6, 182, 212, 0.5),
+                    0 0 40px rgba(168, 85, 247, 0.3);
+            }
+            50% {
+                box-shadow: 
+                    0 0 30px rgba(6, 182, 212, 0.8),
+                    0 0 60px rgba(168, 85, 247, 0.6),
+                    0 0 90px rgba(6, 182, 212, 0.4);
+            }
         }
         
-        .subtitle {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 15px;
-            font-weight: 400;
-            letter-spacing: 0.2px;
+        .pulse-animation {
+            animation: pulse-glow 2s ease-in-out infinite;
         }
         
-        .form-group {
-            margin-bottom: 24px;
-        }
-        
-        label {
-            display: block;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 10px;
-            letter-spacing: 0.1px;
-        }
-        
-        .input-wrapper {
-            position: relative;
-        }
-        
-        input[type="number"] {
-            width: 100%;
-            padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-        }
-        
-        input[type="number"]::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        input[type="number"]:focus {
-            background: rgba(255, 255, 255, 0.25);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
-            transform: translateY(-1px);
-        }
-        
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-        
-        .checkbox-container:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.25);
-            transform: translateY(-1px);
-        }
-        
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .checkbox-label {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            flex: 1;
-        }
-        
-        .btn-primary {
-            width: 100%;
-            padding: 18px 24px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #667eea;
-            border: none;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-top: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            letter-spacing: 0.3px;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            background: rgba(255, 255, 255, 1);
-        }
-        
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-        
-        .btn-secondary {
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin: 8px 8px 8px 0;
-            letter-spacing: 0.2px;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
-        }
-        
-        .result-card {
-            margin-top: 24px;
-            animation: slideIn 0.4s ease-out;
-        }
-        
-        @keyframes slideIn {
+        @keyframes fill-bar {
             from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+                width: 0%;
             }
         }
         
-        .result-header {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            letter-spacing: 0.2px;
+        .strength-bar {
+            animation: fill-bar 0.8s ease-out;
         }
         
-        .password-display {
-            font-size: 28px;
-            font-weight: 700;
-            color: white;
-            word-break: break-all;
-            margin-bottom: 20px;
-            padding: 24px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            text-align: center;
-            letter-spacing: 3px;
-            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+        .mono-font {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
         }
         
-        .strength-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            margin-top: 12px;
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 32px;
         }
         
-        .strength-badge.weak {
-            background: rgba(255, 107, 107, 0.2);
-            color: #ffebee;
-            border: 1px solid rgba(255, 107, 107, 0.3);
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
         }
         
-        .strength-badge.medium {
-            background: rgba(255, 217, 61, 0.2);
-            color: #fff9e6;
-            border: 1px solid rgba(255, 217, 61, 0.3);
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(51, 65, 85, 0.8);
+            transition: 0.3s;
+            border-radius: 32px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
         }
         
-        .strength-badge.strong {
-            background: rgba(81, 207, 102, 0.2);
-            color: #e8f5e9;
-            border: 1px solid rgba(81, 207, 102, 0.3);
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
         }
         
-        .stats-display {
-            text-align: center;
-            margin-top: 24px;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.2px;
+        input:checked + .toggle-slider {
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
         }
         
-        .flash-message {
-            padding: 16px 20px;
-            border-radius: 14px;
-            margin-bottom: 24px;
-            font-weight: 500;
-            font-size: 14px;
-            animation: slideIn 0.3s ease-out;
-            backdrop-filter: blur(10px);
-        }
-        
-        .flash-message.success {
-            background: rgba(81, 207, 102, 0.2);
-            color: #e8f5e9;
-            border: 1px solid rgba(81, 207, 102, 0.3);
-        }
-        
-        .flash-message.error {
-            background: rgba(255, 107, 107, 0.2);
-            color: #ffebee;
-            border: 1px solid rgba(255, 107, 107, 0.3);
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-        }
-        
-        @media (max-width: 600px) {
-            .glass-card {
-                padding: 32px 24px;
-            }
-            
-            h1 {
-                font-size: 36px;
-            }
-            
-            .password-display {
-                font-size: 22px;
-                letter-spacing: 2px;
-            }
+        input:checked + .toggle-slider:before {
+            transform: translateX(28px);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="glass-card">
-            <div class="header">
-                <h1>Password Generator</h1>
-                <p class="subtitle">Create secure passwords instantly</p>
+<body class="flex items-center justify-center p-4 md:p-8">
+    <div class="relative z-10 w-full max-w-2xl space-y-6">
+        <!-- Main Card -->
+        <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 md:p-8 shadow-2xl cyber-glow">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                    Password Generator
+                </h1>
+                <p class="text-slate-400 text-sm md:text-base">Create secure passwords instantly</p>
             </div>
             
+            <!-- Flash Messages -->
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="flash-message {{ category }}">
+                        <div class="mb-6 p-4 rounded-xl {% if category == 'success' %}bg-green-500/20 border border-green-500/30 text-green-300{% else %}bg-red-500/20 border border-red-500/30 text-red-300{% endif %}">
                             {{ message }}
                         </div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
             
-            <form method="POST" action="/">
-                <div class="form-group">
-                    <label for="length">Password Length</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="length" name="length" value="12" min="1" max="128" required placeholder="Enter length">
+            <!-- Form -->
+            <form method="POST" action="/" class="space-y-6">
+                <!-- Length Input -->
+                <div>
+                    <label for="length" class="block text-cyan-300 font-semibold mb-3 text-sm md:text-base">
+                        Password Length
+                    </label>
+                    <input 
+                        type="number" 
+                        id="length" 
+                        name="length" 
+                        value="12" 
+                        min="1" 
+                        max="128" 
+                        required
+                        class="w-full px-6 py-4 bg-black/50 border border-cyan-500/30 rounded-xl text-white text-lg md:text-xl font-semibold focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/50 transition-all mono-font"
+                        placeholder="12"
+                    >
+                </div>
+                
+                <!-- Toggle Switches -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-black/30 rounded-xl border border-white/10">
+                        <label for="include_numbers" class="text-white font-medium text-sm md:text-base cursor-pointer flex-1">
+                            Include Numbers
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="include_numbers" name="include_numbers" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 bg-black/30 rounded-xl border border-white/10">
+                        <label for="include_symbols" class="text-white font-medium text-sm md:text-base cursor-pointer flex-1">
+                            Include Symbols
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="include_symbols" name="include_symbols" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 bg-black/30 rounded-xl border border-white/10">
+                        <label for="save_to_file" class="text-white font-medium text-sm md:text-base cursor-pointer flex-1">
+                            Save to File
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="save_to_file" name="save_to_file">
+                            <span class="toggle-slider"></span>
+                        </label>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="include_numbers" name="include_numbers" checked>
-                        <label for="include_numbers" class="checkbox-label">Include Numbers</label>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="include_symbols" name="include_symbols" checked>
-                        <label for="include_symbols" class="checkbox-label">Include Symbols</label>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="save_to_file" name="save_to_file">
-                        <label for="save_to_file" class="checkbox-label">Save to file</label>
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn-primary">Generate Password</button>
+                <!-- Generate Button -->
+                <button 
+                    type="submit" 
+                    class="w-full py-5 bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500 text-white font-bold text-lg md:text-xl rounded-xl shadow-lg hover:scale-105 transition-all duration-300 pulse-animation cyber-glow-hover"
+                >
+                    Generate Password
+                </button>
             </form>
             
-            <div class="stats-display" id="stats">Click generate to see stats</div>
+            <!-- Stats Display -->
+            <div id="stats" class="mt-6 p-4 bg-black/30 rounded-xl border border-white/10 text-center text-slate-400 text-sm">
+                Click generate to see stats
+            </div>
         </div>
         
+        <!-- Password Result Card -->
         {% if password %}
-        <div class="glass-card result-card">
-            <div class="result-header">Your Password</div>
-            <div class="password-display">{{ password }}</div>
-            <div class="button-group">
-                <button onclick="navigator.clipboard.writeText('{{ password }}').then(()=>{const btn=event.target;btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000)}).catch(()=>alert('Copy failed'))" class="btn-secondary">Copy</button>
+        <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 md:p-8 shadow-2xl cyber-glow animate-fade-in">
+            <h2 class="text-cyan-300 font-bold text-xl mb-4">Your Password</h2>
+            
+            <!-- Password Display -->
+            <div class="mono-font text-2xl md:text-4xl bg-black/50 p-6 rounded-xl border border-cyan-500/30 text-white text-center mb-6 break-all font-bold tracking-wider">
+                {{ password }}
             </div>
-            <div>
-                <span class="strength-badge {{ strength.lower() }}">{{ strength }}</span>
+            
+            <!-- Copy Button -->
+            <button 
+                onclick="navigator.clipboard.writeText('{{ password }}').then(()=>{const btn=event.target;const original=btn.innerHTML;btn.innerHTML='<svg class=\'w-5 h-5 inline mr-2\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M5 13l4 4L19 7\'></path></svg>Copied!';setTimeout(()=>btn.innerHTML=original,2000)}).catch(()=>alert('Copy failed'))"
+                class="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-cyan-600 to-purple-600 text-white font-semibold rounded-xl hover:from-cyan-500 hover:to-purple-500 transition-all duration-300 hover:scale-105"
+            >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                Copy Password
+            </button>
+            
+            <!-- Strength Meter -->
+            <div class="mt-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-slate-300 font-semibold text-sm">Strength</span>
+                    <span class="text-white font-bold {% if strength.lower() == 'weak' %}text-red-400{% elif strength.lower() == 'medium' %}text-yellow-400{% else %}text-green-400{% endif %}">
+                        {{ strength }}
+                    </span>
+                </div>
+                <div class="w-full h-3 bg-black/50 rounded-full overflow-hidden border border-white/10">
+                    <div 
+                        class="strength-bar h-full rounded-full transition-all duration-500 {% if strength.lower() == 'weak' %}bg-gradient-to-r from-red-500 to-red-600{% elif strength.lower() == 'medium' %}bg-gradient-to-r from-yellow-500 to-yellow-600{% else %}bg-gradient-to-r from-green-500 to-green-600{% endif %}"
+                        style="width: {% if strength.lower() == 'weak' %}33%{% elif strength.lower() == 'medium' %}66%{% else %}100%{% endif %}; box-shadow: 0 0 10px {% if strength.lower() == 'weak' %}rgba(239, 68, 68, 0.5){% elif strength.lower() == 'medium' %}rgba(234, 179, 8, 0.5){% else %}rgba(34, 197, 94, 0.5){% endif %};"
+                    ></div>
+                </div>
             </div>
         </div>
         {% endif %}
@@ -428,16 +268,18 @@
         const statsEl = document.getElementById('stats');
         
         // Update stats when form is submitted
-        btn.onclick = () => {
-            const len = parseInt(document.querySelector('input[name="length"]').value);
-            gens.push({length: len, time: new Date().toISOString()});
-            localStorage.setItem('pwStats', JSON.stringify(gens));
-            const avg = gens.reduce((a, b) => a + b.length, 0) / gens.length;
-            statsEl.innerHTML = `Generated: ${gens.length} | Avg length: ${avg.toFixed(1)}`;
-        };
+        if (btn) {
+            btn.onclick = () => {
+                const len = parseInt(document.querySelector('input[name="length"]').value);
+                gens.push({length: len, time: new Date().toISOString()});
+                localStorage.setItem('pwStats', JSON.stringify(gens));
+                const avg = gens.reduce((a, b) => a + b.length, 0) / gens.length;
+                statsEl.innerHTML = `Generated: ${gens.length} | Avg length: ${avg.toFixed(1)}`;
+            };
+        }
         
         // Load initial stats on page load
-        if (gens.length) {
+        if (gens.length && statsEl) {
             const avg = gens.reduce((a, b) => a + b.length, 0) / gens.length;
             statsEl.innerHTML = `Generated: ${gens.length} | Avg length: ${avg.toFixed(1)}`;
         }
